@@ -1,198 +1,233 @@
-<h2>Register</h2>
-
-<input id="name" placeholder="Name"><br>
-<input id="email" placeholder="Email"><br>
-<input id="mobile" placeholder="Mobile"><br>
-<input id="password" type="password" placeholder="Password"><br>
-
-<button onclick="register()">Register</button>
-
-<script>
-function register() {
-    fetch("http://localhost:3000/register", {
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({
-            name: name.value,
-            email: email.value,
-            mobile: mobile.value,
-            password: password.value
-        })
-    })
-    .then(res => res.json())
-    .then(data => alert(data.message));
-}
-</script>
-<h2>Login</h2>
-
-<input id="email" placeholder="Email"><br>
-<input id="password" type="password" placeholder="Password"><br>
-
-<button onclick="login()">Login</button>
-
-<p><a href="#" onclick="reset()">Forgot Password?</a></p>
-
-<script>
-function login() {
-    fetch("http://localhost:3000/login", {
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({
-            email: email.value,
-            password: password.value
-        })
-    })
-    .then(res => res.json())
-    .then(data => {
-        alert(data.message);
-        if (data.message === "Login success") {
-            window.location = "dashboard.html";
-        }
-    });
-}
-
-function reset() {
-    const email = prompt("Enter Email or Mobile");
-    const newPassword = prompt("Enter New Password");
-
-    fetch("http://localhost:3000/reset", {
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({ email, newPassword })
-    })
-    .then(res => res.json())
-    .then(data => alert(data.message));
-}
-</script>
-<h2>Family Dashboard</h2>
-
-<h3>Create Family</h3>
-<input id="husband" placeholder="Husband Name">
-<input id="wife" placeholder="Wife Name">
-<input id="date" type="date">
-
-<button onclick="createFamily()">Create</button>
-
-<h3>Add Member</h3>
-<input id="fid" placeholder="Family ID">
-<input id="mname" placeholder="Name">
-<input id="relation" placeholder="Relation">
-<input id="gender" placeholder="Gender">
-<input id="dob" type="date">
-<input id="job" placeholder="Occupation">
-
-<button onclick="addMember()">Add</button>
-
-<h3>View Family</h3>
-<input id="viewId" placeholder="Family ID">
-<button onclick="viewFamily()">View</button>
-
-<pre id="output"></pre>
-
-<script>
-function createFamily() {
-    fetch("http://localhost:3000/create-family", {
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({
-            husband: husband.value,
-            wife: wife.value,
-            marriageDate: date.value
-        })
-    })
-    .then(res => res.json())
-    .then(data => alert("Family ID: " + data.familyId));
-}
-
-function addMember() {
-    fetch("http://localhost:3000/add-member", {
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({
-            familyId: fid.value,
-            name: mname.value,
-            relation: relation.value,
-            gender: gender.value,
-            dob: dob.value,
-            occupation: job.value
-        })
-    })
-    .then(res => res.json())
-    .then(data => alert(data.message));
-}
-
-function viewFamily() {
-    fetch("http://localhost:3000/family/" + viewId.value)
-    .then(res => res.json())
-    .then(data => {
-        output.textContent = JSON.stringify(data, null, 2);
-    });
-}
-</script>
+<!DOCTYPE html>
+<html>
+<head>
+<title>Register</title>
+<style>
 body {
-    font-family: Arial, sans-serif;
-    background: linear-gradient(to right, #4facfe, #00f2fe);
-    margin: 0;
-    padding: 0;
+    font-family: Arial;
+    background: linear-gradient(to right, #667eea, #764ba2);
 }
-
 .container {
     width: 350px;
     margin: 80px auto;
     background: white;
     padding: 25px;
     border-radius: 10px;
-    box-shadow: 0px 5px 15px rgba(0,0,0,0.2);
     text-align: center;
 }
-
-h2 {
-    margin-bottom: 20px;
-}
-
 input {
     width: 90%;
     padding: 10px;
-    margin: 8px 0;
-    border-radius: 5px;
-    border: 1px solid #ccc;
+    margin: 10px 0;
 }
-
 button {
     width: 95%;
     padding: 10px;
-    background: #4facfe;
-    border: none;
+    background: #667eea;
     color: white;
-    font-size: 16px;
-    border-radius: 5px;
-    cursor: pointer;
+    border: none;
 }
+</style>
+</head>
+<body>
 
-button:hover {
-    background: #007bff;
+<div class="container">
+<h2>Register</h2>
+
+<input placeholder="Full Name">
+<input placeholder="Email">
+<input placeholder="Mobile Number">
+<input type="password" placeholder="Password">
+
+<button>Register</button>
+
+<p>Already have account? <a href="login.html">Login</a></p>
+</div>
+
+</body>
+</html>
+<!DOCTYPE html>
+<html>
+<head>
+<title>Login</title>
+<style>
+body {
+    font-family: Arial;
+    background: linear-gradient(to right, #43cea2, #185a9d);
 }
-
-a {
-    color: #007bff;
-    text-decoration: none;
+.container {
+    width: 350px;
+    margin: 80px auto;
+    background: white;
+    padding: 25px;
+    border-radius: 10px;
+    text-align: center;
 }
+input {
+    width: 90%;
+    padding: 10px;
+    margin: 10px 0;
+}
+button {
+    width: 95%;
+    padding: 10px;
+    background: #43cea2;
+    color: white;
+    border: none;
+}
+</style>
+</head>
+<body>
 
-.dashboard {
+<div class="container">
+<h2>Login</h2>
+
+<input placeholder="Email or Mobile">
+<input type="password" placeholder="Password">
+
+<button>Login</button>
+
+<p><a href="reset.html">Forgot Password?</a></p>
+</div>
+
+</body>
+</html>
+<!DOCTYPE html>
+<html>
+<head>
+<title>Reset Password</title>
+<style>
+body {
+    font-family: Arial;
+    background: linear-gradient(to right, #ff758c, #ff7eb3);
+}
+.container {
+    width: 350px;
+    margin: 80px auto;
+    background: white;
+    padding: 25px;
+    border-radius: 10px;
+    text-align: center;
+}
+input {
+    width: 90%;
+    padding: 10px;
+    margin: 10px 0;
+}
+button {
+    width: 95%;
+    padding: 10px;
+    background: #ff758c;
+    color: white;
+    border: none;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+<h2>Reset Password</h2>
+
+<input placeholder="Email or Mobile">
+<input type="password" placeholder="New Password">
+
+<button>Reset</button>
+
+</div>
+
+</body>
+<!DOCTYPE html>
+<html>
+<head>
+<title>Family Dashboard</title>
+<style>
+body {
+    font-family: Arial;
+    background: #f5f5f5;
+}
+.container {
     width: 80%;
     margin: 40px auto;
     background: white;
     padding: 20px;
     border-radius: 10px;
 }
-
 .section {
     margin-bottom: 30px;
 }
-
-pre {
-    background: #eee;
+input {
     padding: 10px;
-    border-radius: 5px;
-    overflow-x: auto;
+    margin: 5px;
 }
+button {
+    padding: 10px;
+    background: #333;
+    color: white;
+    border: none;
+}
+.card {
+    display: inline-block;
+    width: 150px;
+    padding: 10px;
+    margin: 10px;
+    background: #eee;
+    border-radius: 10px;
+    text-align: center;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<h2>Family Dashboard</h2>
+
+<div class="section">
+<h3>Create Family</h3>
+<input placeholder="Husband Name">
+<input placeholder="Wife Name">
+<input type="date">
+<button>Create Family</button>
+</div>
+
+<div class="section">
+<h3>Add Member</h3>
+<input placeholder="Family ID">
+<input placeholder="Name">
+<input placeholder="Relation (Son/Daughter)">
+<input placeholder="Gender">
+<input type="date">
+<input placeholder="Occupation">
+<button>Add Member</button>
+</div>
+
+<div class="section">
+<h3>Family Members</h3>
+
+<div class="card">
+<h4>Father</h4>
+<p>Engineer</p>
+</div>
+
+<div class="card">
+<h4>Mother</h4>
+<p>Teacher</p>
+</div>
+
+<div class="card">
+<h4>Son</h4>
+<p>Student</p>
+</div>
+
+<div class="card">
+<h4>Daughter</h4>
+<p>Student</p>
+</div>
+
+</div>
+
+</div>
+
+</body>
+</html>
+
